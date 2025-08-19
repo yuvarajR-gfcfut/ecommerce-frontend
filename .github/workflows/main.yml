@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # This specifies the workflow will run on every push to the 'main' branch
+  pull_request:
+    branches:
+      - main  # This specifies the workflow will run on every pull request to the 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # This specifies the operating system the job will run on
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  # This action checks out your repository to the runner
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # You can specify the Node.js version your project requires
+
+      - name: Install dependencies
+        run: npm ci  # 'npm ci' is preferred for CI/CD environments as it provides a clean install
+
+      - name: Build project
+        run: npm run build # Assuming your package.json has a 'build' script
+
+      - name: Run tests (optional but recommended)
+        run: npm test # Assuming your package.json has a 'test' script
